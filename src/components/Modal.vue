@@ -5,9 +5,9 @@
         <div class="modal-content">
           <div class="modal-header">
             <button
-              type="button"
-              class="close"
-              @click="modalStatusControll(modalOpened)"
+                type="button"
+                class="close"
+                @click="modalStatusControll(modalOpened)"
             >
               <span>&times;</span>
             </button>
@@ -19,15 +19,15 @@
               <label>Выберите дату</label>
 
               <datepicker
-                class="form-control input-datepicker"
-                v-model="pickedDate"
-                :locale="calendarSettings.locale"
-                :inputFormat="dateFormat"
+                  class="form-control input-datepicker"
+                  v-model="pickedDate"
+                  :locale="calendarSettings.locale"
+                  :inputFormat="dateFormat"
               />
 
               <div
-                v-if="pickedDate && !dateIsValid && dataIsValidated"
-                class="text-danger"
+                  v-if="pickedDate && !dateIsValid && dataIsValidated"
+                  class="text-danger"
               >
                 Дата должна быть в промежутке
                 {{ minDateSelectedFormatted }} -
@@ -39,17 +39,17 @@
             <div class="form-group text-left">
               <label>Выберите валюту</label>
               <custom-select
-                :options="getCurrencyData"
-                @select="selectCurrency"
+                  :options="getCurrencyData"
+                  @select="selectCurrency"
               ></custom-select>
             </div>
           </div>
 
           <div class="modal-footer">
             <button
-              @click="checkData"
-              class="btn btn-primary"
-              :disabled="checkIsDisabled"
+                @click="checkData"
+                class="btn btn-primary"
+                :disabled="checkIsDisabled"
             >
               Проверить
             </button>
@@ -63,9 +63,9 @@
 <script>
 import Datepicker from "vue3-datepicker";
 import CustomSelect from "@/components/CustomSelect";
-import { sub, format, isWithinInterval } from "date-fns";
+import {sub, format, isWithinInterval} from "date-fns";
 import ru from "date-fns/locale/ru";
-import { mapActions, mapGetters } from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "Modal",
@@ -87,16 +87,11 @@ export default {
       maxDateSelected: null,
       minDateSelectedFormatted: "",
       maxDateSelectedFormatted: "",
-
       selectedCurrency: null,
-
-      // validation
       dataIsValidated: false,
       dateIsValid: null,
       currencyIsValid: null,
-
       modalOpened: false,
-
       calendarSettings: {
         locale: ru
       }
@@ -120,16 +115,16 @@ export default {
     setDateRules() {
       const todayDate = new Date();
 
-      this.minDateSelected = sub(todayDate, { years: 2 });
+      this.minDateSelected = sub(todayDate, {years: 2});
       this.maxDateSelected = todayDate;
 
       this.minDateSelectedFormatted = format(
-        this.minDateSelected,
-        "dd-MM-yyyy"
+          this.minDateSelected,
+          "dd-MM-yyyy"
       );
       this.maxDateSelectedFormatted = format(
-        this.maxDateSelected,
-        "dd-MM-yyyy"
+          this.maxDateSelected,
+          "dd-MM-yyyy"
       );
     },
 
@@ -142,15 +137,11 @@ export default {
 
       // check currency
       this.currencyIsValid = this.selectedCurrency;
-
       this.dataIsValidated = true;
 
       if (this.dateIsValid && this.currencyIsValid) {
         const dateFormatted = format(this.pickedDate, "dd.MM.yyyy");
-
         await this.takePrivatBankData(dateFormatted);
-        // TODO: think about it, maybe add loader
-
         this.saveUserCurrency(this.selectedCurrency);
       }
     },
